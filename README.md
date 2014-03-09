@@ -93,3 +93,5 @@ $ah->setRoute('SurfStack\Test\TestClass', 'foo');
 // You can now determine if the user is allowed access
 $isAllowed = $ah->isAllowed();
 ```
+
+To install using composer, use the code from the Wiki page [Composer Wiki page](../../wiki/Composer).
