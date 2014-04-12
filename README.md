@@ -1,4 +1,4 @@
-SurfStack Access Control in PHP [![Build Status](https://travis-ci.org/josephspurrier/surfstack-access-control.png?branch=master)](https://travis-ci.org/josephspurrier/surfstack-access-control) [![Coverage Status](https://coveralls.io/repos/josephspurrier/surfstack-access-control/badge.png)](https://coveralls.io/r/josephspurrier/surfstack-access-control)
+SurfStack Access Control in PHP [![Build Status](https://travis-ci.org/josephspurrier/surfstack-access-control.png?branch=master)](https://travis-ci.org/josephspurrier/surfstack-access-control) [![Coverage Status](https://coveralls.io/repos/josephspurrier/surfstack-access-control/badge.png?branch=master)](https://coveralls.io/r/josephspurrier/surfstack-access-control?branch=master)
 ===============================
 
 Single class that determines if a user is allowed to access a class and a method.
