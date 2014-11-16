@@ -1,7 +1,8 @@
-SurfStack Access Control in PHP [![Build Status](https://travis-ci.org/josephspurrier/surfstack-access-control.png?branch=master)](https://travis-ci.org/josephspurrier/surfstack-access-control) [![Coverage Status](https://coveralls.io/repos/josephspurrier/surfstack-access-control/badge.png?branch=master)](https://coveralls.io/r/josephspurrier/surfstack-access-control?branch=master)
+SurfStack Access Control in PHP 
 ===============================
+[![Build Status](https://travis-ci.org/josephspurrier/surfstack-access-control.png?branch=master)](https://travis-ci.org/josephspurrier/surfstack-access-control) [![Coverage Status](https://coveralls.io/repos/josephspurrier/surfstack-access-control/badge.png?branch=master)](https://coveralls.io/r/josephspurrier/surfstack-access-control?branch=master)
 
-Single class that determines if a user is allowed to access a class and a method.
+Single class that determines if a user is allowed to access a class method or function.
 
 For this example, we'll assume you have a class called: SurfStack\Test\TestClass.
 The class will have two methods called: foo and bar.
@@ -21,6 +22,16 @@ class TestClass
     {
         echo 'Hello universe!';
     }
+}
+```
+
+And you have a function called: myFunction
+
+```php
+<?php
+function myFunction
+{
+    echo 'Hello mars!';
 }
 ```
 
@@ -50,6 +61,8 @@ $rules = array(
     'SurfStack\Test\TestClass:foo' => array('anonymous'),
     // This is a Class Rule
     'SurfStack\Test\TestClass:*' => array('authenticated', 'administrators'),
+    // This is a Function Rule
+    'myFunction' => array('anonymous'),
 );
 
 // Create an associative array for the Permissions.
@@ -85,7 +98,10 @@ $ah->setDenyAll($denyAll);
 // Pass the route (class and method) the user requested.
 // You'll also need to dynamically generate these values.
 // We'll use our class and method names in this example.
-$ah->setRoute('SurfStack\Test\TestClass', 'foo');
+$ah->setRouteClass('SurfStack\Test\TestClass', 'foo');
+
+// Or pass the route (function)
+$ah->setRouteClass('myFunction');
 
 // At this point, we've provide all the information the class needs to
 // determine if the user has access to the requested route.

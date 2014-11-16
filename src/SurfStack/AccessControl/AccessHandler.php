@@ -14,7 +14,7 @@ namespace SurfStack\AccessControl;
 /**
  * Access Handler
  *
- * Determines if a user is allowed to access a class and method based on rules.
+ * Determines if a user is allowed to access a class method or function based on rules.
  * Method Rules override Class Rules.
  *
  * Method Rule allows access for one method:
@@ -54,6 +54,12 @@ class AccessHandler
      * @var string
      */
     private $strMethod = '';
+    
+    /**
+     * Function name
+     * @var mixed
+     */
+    private $strFunction = '';
     
     /**
      * Associative array of access per class and method
@@ -120,10 +126,19 @@ class AccessHandler
      * @param string $strClass
      * @param string $strMethod
      */
-    public function setRoute($strClass, $strMethod)
+    public function setRouteClass($strClass, $strMethod)
     {
         $this->strClass = $strClass;
         $this->strMethod = $strMethod;
+    }
+    
+    /**
+     * Set the function
+     * @param mixed $strFunction
+     */
+    public function setRouteFunction($strFunction)
+    {
+        $this->strFunction = $strFunction;
     }
     
     /**
@@ -158,14 +173,26 @@ class AccessHandler
             return true;
         }
     
-        // Routes
-        $arrRoute = array(
-            // Exact route
-            $this->strClass.':'.$this->strMethod,
-            // Wildcard route
-            $this->strClass.':*',
-        );
-    
+        // If a function
+        if ($this->strFunction)
+        {
+            // Routes
+            $arrRoute = array(
+                // Function
+                $this->strFunction,
+            );
+        }
+        else
+        {
+            // Routes
+            $arrRoute = array(
+                // Exact route
+                $this->strClass.':'.$this->strMethod,
+                // Wildcard route
+                $this->strClass.':*',
+            );
+        }
+        
         // For each type of route
         foreach($arrRoute as $request)
         {

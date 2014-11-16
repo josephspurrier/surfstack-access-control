@@ -87,7 +87,7 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setRules($rules);
         
         // Set the routes (class and method called)
-        $a->setRoute($class, $method);
+        $a->setRouteClass($class, $method);
         
         // Get bool
         $result = $a->isAllowed();
@@ -122,7 +122,7 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setRules($rules);
     
         // Set the routes (class and method called)
-        $a->setRoute($class, $method);
+        $a->setRouteClass($class, $method);
     
         // Get bool
         $result = $a->isAllowed();
@@ -161,7 +161,7 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setAllowAll(array($group));
     
         // Set the routes (class and method called)
-        $a->setRoute($class2, $method);
+        $a->setRouteClass($class2, $method);
     
         // Get bool
         $result = $a->isAllowed();
@@ -199,7 +199,7 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setDenyAll(array($group));
     
         // Set the routes (class and method called)
-        $a->setRoute($class, $method);
+        $a->setRouteClass($class, $method);
     
         // Get bool
         $result = $a->isAllowed();
@@ -240,7 +240,7 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setAllowAll(array($group));
     
         // Set the routes (class and method called)
-        $a->setRoute($class, $method);
+        $a->setRouteClass($class, $method);
     
         // Get bool
         $result = $a->isAllowed();
@@ -275,7 +275,41 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setRules($rules);
     
         // Set the routes (class and method called)
-        $a->setRoute($class, $method);
+        $a->setRouteClass($class, $method);
+    
+        // Get bool
+        $result = $a->isAllowed();
+    
+        // Should allow access
+        $this->assertTrue($a->isAllowed());
+    }
+    
+    public function testCanAccessIfFunctionRule()
+    {
+        // Set the variables
+        $group = 'anonymous';
+        $function = 'testFunction';
+        $isGroupMember = true;
+    
+        // Create an instance
+        $a = new AccessHandler();
+    
+        // Enforce
+        $a->isEnforced = true;
+    
+        // Set the permissions
+        $permissions = array(
+            $group => $isGroupMember,
+        );
+        $a->setPermissions($permissions);
+    
+        // Set the rules
+        $rules = array();
+        $rules[$function] = array($group);
+        $a->setRules($rules);
+    
+        // Set the routes (class and method called)
+        $a->setRouteFunction($function);
     
         // Get bool
         $result = $a->isAllowed();
@@ -311,7 +345,42 @@ class AccessControlTest extends PHPUnit_Framework_TestCase
         $a->setRules($rules);
     
         // Set the routes (class and method called)
-        $a->setRoute($class, $method2);
+        $a->setRouteClass($class, $method2);
+    
+        // Get bool
+        $result = $a->isAllowed();
+    
+        // Should not allow access
+        $this->assertFalse($a->isAllowed());
+    }
+    
+    public function testCannotAccessIfFunctionRuleDifferent()
+    {
+        // Set the variables
+        $group = 'anonymous';
+        $func1 = 'testFunc1';
+        $func2 = 'testFunc2';
+        $isGroupMember = true;
+    
+        // Create an instance
+        $a = new AccessHandler();
+    
+        // Enforce
+        $a->isEnforced = true;
+    
+        // Set the permissions
+        $permissions = array(
+            $group => $isGroupMember,
+        );
+        $a->setPermissions($permissions);
+    
+        // Set the rules
+        $rules = array();
+        $rules[$func1] = array($group);
+        $a->setRules($rules);
+    
+        // Set the routes (class and method called)
+        $a->setRouteFunction($func2);
     
         // Get bool
         $result = $a->isAllowed();
